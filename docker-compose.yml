@@ -1,5 +1,5 @@
 ---
-version: "2.1"
+version: '3'
 services:
   plex:
     image: lscr.io/linuxserver/plex
@@ -46,9 +46,13 @@ services:
   filebrowser:
     image: filebrowser/filebrowser
     container_name: filebrowser
+    user: 1000:1000
     volumes:
-      - /path/file/root:/srv
-      - /path/file/filebrowser.db:/database.db
+      - /path/file/:/srv
+      - /path/file/filebrowser.db:/database.db #must be created before first start
       - /path/file/.filebrowser.json:/.filebrowser.json
     ports:
       - 80:80 
+    restart: unless-stopped
+    security-opt:
+      - no-new-privileges: true
